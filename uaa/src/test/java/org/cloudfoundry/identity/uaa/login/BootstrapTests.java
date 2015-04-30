@@ -14,6 +14,7 @@ package org.cloudfoundry.identity.uaa.login;
 
 import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.cloudfoundry.identity.uaa.authentication.Origin;
 import org.cloudfoundry.identity.uaa.config.YamlPropertiesFactoryBean;
 import org.cloudfoundry.identity.uaa.config.YamlServletProfileInitializer;
@@ -107,7 +108,7 @@ public class BootstrapTests {
         }
         Set<String> removeme = new HashSet<>();
         for ( Map.Entry<Object,Object> entry : System.getProperties().entrySet()) {
-            if (entry.getKey().toString().startsWith("login.")) {
+            if (entry.getKey().toString().startsWith("login.") || entry.getKey().toString().startsWith("database.")) {
                 removeme.add(entry.getKey().toString());
             }
         }
@@ -133,27 +134,64 @@ public class BootstrapTests {
     }
 
     @Test
-    public void testInternalHostnames() throws Exception {
-        String uaa = "uaa.some.test.domain.com";
-        String login = uaa.replace("uaa", "login");
-        System.setProperty("uaa.url", "https://" + uaa + ":555/uaa");
-        System.setProperty("login.url", "https://" + login + ":555/uaa");
-        context = getServletContext(null, "login.yml","test/hostnames/uaa.yml", "file:./src/main/webapp/WEB-INF/spring-servlet.xml");
-        IdentityZoneResolvingFilter filter = context.getBean(IdentityZoneResolvingFilter.class);
-        Set<String> defaultHostnames = new HashSet<>(Arrays.asList(uaa, login, "localhost", "host1.domain.com", "host2", "test3.localhost", "test4.localhost"));
-        assertEquals(filter.getDefaultZoneHostnames(), defaultHostnames);
+    public void testInternalHostnamesWithDBSettings() throws Exception {
+        try {
+            String uaa = "uaa.some.test.domain.com";
+            String login = uaa.replace("uaa", "login");
+            System.setProperty("uaa.url", "https://" + uaa + ":555/uaa");
+            System.setProperty("login.url", "https://" + login + ":555/uaa");
+            System.setProperty("database.maxactive", "50");
+            System.setProperty("database.maxidle", "5");
+            System.setProperty("database.removeabandoned", "true");
+            System.setProperty("database.logabandoned", "false");
+            System.setProperty("database.abandonedtimeout", "45");
+            System.setProperty("database.evictionintervalms", "30000");
+            context = getServletContext(null, "login.yml", "test/hostnames/uaa.yml", "file:./src/main/webapp/WEB-INF/spring-servlet.xml");
+            IdentityZoneResolvingFilter filter = context.getBean(IdentityZoneResolvingFilter.class);
+            Set<String> defaultHostnames = new HashSet<>(Arrays.asList(uaa, login, "localhost", "host1.domain.com", "host2", "test3.localhost", "test4.localhost"));
+            assertEquals(filter.getDefaultZoneHostnames(), defaultHostnames);
+            DataSource ds = context.getBean(DataSource.class);
+            assertEquals(50, ds.getMaxActive());
+            assertEquals(5, ds.getMaxIdle());
+            assertTrue(ds.isRemoveAbandoned());
+            assertFalse(ds.isLogAbandoned());
+            assertEquals(45, ds.getRemoveAbandonedTimeout());
+            assertEquals(30000, ds.getTimeBetweenEvictionRunsMillis());
+        } finally {
+            System.clearProperty("database.maxactive");
+            System.clearProperty("database.maxidle");
+            System.clearProperty("database.removeabandoned");
+            System.clearProperty("database.logabandoned");
+            System.clearProperty("database.abandonedtimeout");
+            System.clearProperty("database.evictionintervalms");
+        }
     }
 
     @Test
-    public void testDefaultInternalHostnames() throws Exception {
-        String uaa = "uaa.some.test.domain.com";
-        String login = uaa.replace("uaa", "login");
-        System.setProperty("uaa.url", "https://"+uaa+":555/uaa");
-        System.setProperty("login.url", "https://"+login+":555/uaa");
-        context = getServletContext(null, "login.yml","uaa.yml", "file:./src/main/webapp/WEB-INF/spring-servlet.xml");
-        IdentityZoneResolvingFilter filter = context.getBean(IdentityZoneResolvingFilter.class);
-        Set<String> defaultHostnames = new HashSet<>(Arrays.asList(uaa, login, "localhost"));
-        assertEquals(filter.getDefaultZoneHostnames(), defaultHostnames);
+    public void testDefaultInternalHostnamesAndNoDBSettings() throws Exception {
+        try {
+            //travis profile script overrides these properties
+            System.setProperty("database.maxactive", "100");
+            System.setProperty("database.maxidle", "10");
+            String uaa = "uaa.some.test.domain.com";
+            String login = uaa.replace("uaa", "login");
+            System.setProperty("uaa.url", "https://" + uaa + ":555/uaa");
+            System.setProperty("login.url", "https://" + login + ":555/uaa");
+            context = getServletContext(null, "login.yml", "uaa.yml", "file:./src/main/webapp/WEB-INF/spring-servlet.xml");
+            IdentityZoneResolvingFilter filter = context.getBean(IdentityZoneResolvingFilter.class);
+            Set<String> defaultHostnames = new HashSet<>(Arrays.asList(uaa, login, "localhost"));
+            assertEquals(filter.getDefaultZoneHostnames(), defaultHostnames);
+            DataSource ds = context.getBean(DataSource.class);
+            assertEquals(100, ds.getMaxActive());
+            assertEquals(10, ds.getMaxIdle());
+            assertFalse(ds.isRemoveAbandoned());
+            assertTrue(ds.isLogAbandoned());
+            assertEquals(300, ds.getRemoveAbandonedTimeout());
+            assertEquals(15000, ds.getTimeBetweenEvictionRunsMillis());
+        } finally {
+            System.clearProperty("database.maxactive");
+            System.clearProperty("database.maxidle");
+        }
     }
 
     @Test
