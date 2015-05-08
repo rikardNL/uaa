@@ -3,6 +3,7 @@ Project identityScim = parent.subprojects.find { it.name.equals('cloudfoundry-id
 Project identityLogin = parent.subprojects.find { it.name.equals('cloudfoundry-identity-login') }
 
 apply plugin: 'war'
+apply plugin: 'com.bmuschko.cargo'
 
 processResources {
   //maven replaces project.artifactId in the log4j.properties file
@@ -109,4 +110,19 @@ project.gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
       classpath = files(test.classpath.collect(rewriteInstrumentedLibs))
     }
   }
+}
+
+cargo {
+    containerId = 'tomcat8x'
+    port = 8080
+
+    deployable {
+        context = 'uaa'
+    }
+
+    remote {
+        hostname = '192.168.59.103'
+        username = 'uaa'
+        password = 'uaa'
+    }
 }

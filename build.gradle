@@ -16,6 +16,7 @@ buildscript {
     classpath group: 'postgresql', name: 'postgresql', version:'9.1-901.jdbc3'
     classpath group: 'org.flywaydb', name: 'flyway-gradle-plugin', version: '3.0'
     classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
+    classpath 'com.bmuschko:gradle-cargo-plugin:2.1'
   }
 }
 
@@ -92,7 +93,7 @@ subprojects {
 
   artifacts {
     archives packageSources
-    archives javadocJar
+//    archives javadocJar
   }
   repositories {
     maven { url "http://maven.springframework.org/release" }
