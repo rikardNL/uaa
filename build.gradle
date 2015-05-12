@@ -154,7 +154,7 @@ subprojects {
 //
 //  artifactoryPublish {
 //    publish {
-//      contextUrl = "http://repo.spring.io"
+//      contextUrl = "https://nexus.fareoffice.com"
 //      repository {
 //        repoKey = version.endsWith('-SNAPSHOT') ? 'libs-snapshot-local' : 'libs-release-local'
 //        username = project.hasProperty('artifactory_user') ? "${artifactory_user}" : ""
@@ -228,10 +228,12 @@ task resetCoverage(type: Delete) {
   onlyIf { runningWithCoverage() }
 }
 
-apply plugin: 'cargo'
+apply plugin: 'com.bmuschko.cargo'
 
 cargoStartLocal.dependsOn assemble, prepareDatabase
 cargoRunLocal.dependsOn assemble
+cargoDeployRemote.dependsOn assemble
+cargoRedeployRemote.dependsOn assemble
 
 task flushCoverageData(type: Exec) {
   commandLine "curl", "-s", "-v", "-X", "POST", "http://localhost:8080/uaa/healthz/coverage/flush"
@@ -242,7 +244,7 @@ task flushCoverageData(type: Exec) {
 task run(dependsOn: cargoRunLocal)
 
 cargo {
-  containerId = 'tomcat7x'
+  containerId = 'tomcat8x'
   port = 8080
 
   deployable {
@@ -253,6 +255,12 @@ cargo {
   deployable {
     file = file('samples/app/build/libs/cloudfoundry-identity-app-' + version + '.war')
     context = 'app'
+  }
+
+  remote {
+    hostname = '192.168.59.103'
+    username = 'uaa'
+    password = 'uaa'
   }
 
   local {
