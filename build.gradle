@@ -17,6 +17,7 @@ buildscript {
     classpath group: 'org.flywaydb', name: 'flyway-gradle-plugin', version: '3.0'
     classpath 'org.springframework.build.gradle:propdeps-plugin:0.0.7'
     classpath 'com.bmuschko:gradle-cargo-plugin:2.1'
+    classpath 'com.bmuschko:gradle-docker-plugin:2.4'
   }
 }
 
@@ -243,9 +244,22 @@ task flushCoverageData(type: Exec) {
 
 task run(dependsOn: cargoRunLocal)
 
+//apply plugin: 'com.bmuschko.docker-java-application'
+//
+//docker {
+//  dockerServerUrl = 'http://192.168.59.103:2375'
+//
+//  javaApplication {
+//    baseImage = 'tomcat:8'
+//    maintainer = 'Rikard Andersson "rikard.andersson@netlight.com"'
+//    port = 9000
+//    tag = 'kenobi'
+//  }
+//}
+
 cargo {
   containerId = 'tomcat8x'
-  port = 8080
+  port = 9000
 
   deployable {
     file = file('samples/api/build/libs/cloudfoundry-identity-api-' + version + '.war')
@@ -285,7 +299,7 @@ project.gradle.taskGraph.whenReady { TaskExecutionGraph graph ->
       } else {
         file = file('uaa/build/libs/cloudfoundry-identity-uaa-' + version + '.war')
       }
-      context = 'uaa'
+      context = '/'
     }
 
     local {
