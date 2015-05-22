@@ -107,6 +107,8 @@ login:
     #entityIDAlias: cloudfoundry-saml-login
     #Default nameID if IDP nameID is not set
     nameID: 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'
+    #Option to set callback URL for the post binding assertion
+    #postBindingCallbackUrl: authorize/saml
     #Default assertionConsumerIndex if IDP value is not set
     assertionConsumerIndex: 0
     #Local/SP metadata - sign metadata
