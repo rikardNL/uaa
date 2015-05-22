@@ -18,7 +18,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.web.util.RequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * @author Luke Taylor
@@ -27,7 +27,7 @@ public class DelegatingRequestMatcher implements RequestMatcher {
     private final List<RequestMatcher> matchers;
 
     public DelegatingRequestMatcher(List<RequestMatcher> matchers) {
-        this.matchers = new ArrayList<RequestMatcher>(matchers);
+        this.matchers = new ArrayList<>(matchers);
     }
 
     @Override
