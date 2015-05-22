@@ -35,7 +35,7 @@
                 <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint" />
                 <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter" />
                 <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter" />
-                <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter" />
+                <security:filter-chain pattern="/${login.saml.postBindingCallbackUrl:saml/SSO}/**" filters="samlWebSSOProcessingFilter" />
                 <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter" />
                 <security:filter-chain pattern="/saml/discovery/**" filters="samlIDPDiscovery" />
                 <!--<security:filter-chain pattern="/oauth/authorize/**" filters="exceptionTranslationFilter" />-->
@@ -147,6 +147,7 @@
 
         <!-- Processing filter for WebSSO profile messages -->
         <bean id="samlWebSSOProcessingFilter" class="org.springframework.security.saml.SAMLProcessingFilter">
+            <constructor-arg type="java.lang.String" value="/${login.saml.postBindingCallbackUrl:saml/SSO}" />
             <property name="authenticationManager" ref="authenticationManager" />
             <property name="authenticationSuccessHandler" ref="successRedirectHandler" />
         </bean>
