@@ -13,7 +13,7 @@
 
 -->
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
-       xmlns:sec="http://www.springframework.org/schema/security"
+       xmlns:security="http://www.springframework.org/schema/security"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
@@ -37,20 +37,20 @@
     <import resource="classpath:spring/env.xml" />
     <import resource="spring/audit.xml" />
 
-    <sec:http pattern="/resources/**" security="none" />
-    <sec:http pattern="/favicon.ico" security="none" />
-    <sec:http pattern="/info" security="none" />
-    <sec:http pattern="/password/**" security="none" />
-    <sec:http pattern="/healthz/**" security="none" name="healthz"/>
-    <sec:http pattern="/saml/web/**" security="none" />
-    <sec:http pattern="/vendor/**" security="none" />
+    <security:http pattern="/resources/**" security="none" />
+    <security:http pattern="/favicon.ico" security="none" />
+    <security:http pattern="/info" security="none" />
+    <security:http pattern="/password/**" security="none" />
+    <security:http pattern="/healthz/**" security="none" name="healthz"/>
+    <security:http pattern="/saml/web/**" security="none" />
+    <security:http pattern="/vendor/**" security="none" />
     <!--<sec:http pattern="/login" security="none" />-->
-    <sec:http pattern="/error" security="none" />
-    <sec:http pattern="/forgot_password*" security="none" />
-    <sec:http pattern="/reset_password" security="none" />
-    <sec:http pattern="/email_sent" security="none" />
-    <sec:http pattern="/create_account*" security="none" />
-    <sec:http pattern="/accounts/email_sent" security="none" />
+    <security:http pattern="/error" security="none" />
+    <security:http pattern="/forgot_password*" security="none" />
+    <security:http pattern="/reset_password" security="none" />
+    <security:http pattern="/email_sent" security="none" />
+    <security:http pattern="/create_account*" security="none" />
+    <security:http pattern="/accounts/email_sent" security="none" />
 
     <bean id="xFrameOptionsFilter" class="org.cloudfoundry.identity.uaa.login.XFrameOptionsFilter" />
     <bean id="oauth2TokenParseFilter" class="java.lang.Class" factory-method="forName">
@@ -173,30 +173,24 @@
     <import resource="classpath:login-ui.xml"/>
     <import resource="spring/saml-providers.xml"/>
 
-    <!-- Deny-all "buffer" which a request will hit if it isn't matched by any of the other filter chains -->
-    <!--<sec:http name="denyAll" use-expressions="true" create-session="stateless" entry-point-ref="http403EntryPoint"-->
-        <!--authentication-manager-ref="emptyAuthenticationManager">-->
-        <!--<sec:intercept-url pattern="/**" access="denyAll" />-->
-    <!--</sec:http>-->
-
     <bean id="http403EntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
 
     <bean id="uiRequestMatcher" class="org.cloudfoundry.identity.uaa.security.web.DelegatingRequestMatcher">
         <constructor-arg>
             <list>
-                <bean class="org.springframework.security.web.util.AntPathRequestMatcher">
+                <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
                     <constructor-arg value="/" />
                 </bean>
-                <bean class="org.springframework.security.web.util.AntPathRequestMatcher">
+                <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
                     <constructor-arg value="/spring_security_login" />
                 </bean>
-                <bean class="org.springframework.security.web.util.AntPathRequestMatcher">
+                <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
                     <constructor-arg value="/oauth/**" />
                 </bean>
-                <bean class="org.springframework.security.web.util.AntPathRequestMatcher">
+                <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
                     <constructor-arg value="/login**" />
                 </bean>
-                <bean class="org.springframework.security.web.util.AntPathRequestMatcher">
+                <bean class="org.springframework.security.web.util.matcher.AntPathRequestMatcher">
                     <constructor-arg value="/logout.do*" />
                 </bean>
             </list>
