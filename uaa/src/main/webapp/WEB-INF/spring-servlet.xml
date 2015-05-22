@@ -43,6 +43,7 @@
     <security:http pattern="/password/**" security="none" />
     <security:http pattern="/healthz/**" security="none" name="healthz"/>
     <security:http pattern="/saml/web/**" security="none" />
+    <security:http pattern="/authorize/saml*" security="none" />
     <security:http pattern="/vendor/**" security="none" />
     <!--<sec:http pattern="/login" security="none" />-->
     <security:http pattern="/error" security="none" />

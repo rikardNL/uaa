@@ -13,16 +13,13 @@
 
 -->
 
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:security="http://www.springframework.org/schema/security"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:cache="http://www.springframework.org/schema/cache"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
-              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-              http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
-              http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
-              http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 
         <!-- Register authentication manager with SAML provider -->
@@ -77,19 +74,19 @@
             <constructor-arg value="${login.entityID:unit-test-sp}"/>
         </bean>
 
-        <bean id="samlSPAlias" class="java.lang.String">
-            <constructor-arg value="${login.saml.entityIDAlias:${login.entityID:unit-test-sp}}"/>
-        </bean>
+        <!--<bean id="samlSPAlias" class="java.lang.String">-->
+            <!--<constructor-arg value="${login.saml.entityIDAlias:${login.entityID:unit-test-sp}}"/>-->
+        <!--</bean>-->
         <bean id="extendedMetaData" class="org.springframework.security.saml.metadata.ExtendedMetadata">
             <property name="idpDiscoveryEnabled" value="true" />
-            <property name="alias" value="#{T(org.cloudfoundry.identity.uaa.util.UaaStringUtils).getHostIfArgIsURL(@samlSPAlias)}" />
+            <!--<property name="alias" value="#{T(org.cloudfoundry.identity.uaa.util.UaaStringUtils).getHostIfArgIsURL(@samlSPAlias)}" />-->
             <property name="signMetadata" value="${login.saml.signMetaData:true}" />
         </bean>
 
         <!-- Filter automatically generates default SP metadata -->
         <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
             <constructor-arg>
-                <bean class="org.cloudfoundry.identity.uaa.login.saml.ZoneAwareMetadataGenerator">
+                <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
                     <property name="extendedMetadata" ref="extendedMetaData"/>
                     <property name="requestSigned" value="${login.saml.signRequest:true}" />
                     <property name="wantAssertionSigned" value="${login.saml.wantAssertionSigned:false}" />
