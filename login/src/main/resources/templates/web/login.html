@@ -24,7 +24,9 @@
             <div class="saml-login">
                 <p th:if="${showSamlLoginLinks}">or Sign in with: </p>
                 <div th:each="idp : ${idpDefinitions}" th:if="${idp.showSamlLink}">
-                    <a href="" th:href="@{saml/discovery(returnIDParam=idp,entityID=${entityID},idp=${idp.idpEntityAlias},isPassive=true)}" th:text="${idp.linkText}" class="saml-login-link">Use your corporate credentials</a>
+                    <button type="button" value="${idp.linkText}" class="island-button">
+                        <a href="" th:href="@{saml/discovery(returnIDParam=idp,entityID=${entityID},idp=${idp.idpEntityAlias},isPassive=true)}" th:text="${idp.linkText}" class="saml-login-link"></a>
+                    </button>
                 </div>
             </div>
             <th:block th:if="${linkCreateAccountShow}">

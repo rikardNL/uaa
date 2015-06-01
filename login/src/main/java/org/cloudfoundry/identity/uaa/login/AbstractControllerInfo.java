@@ -41,7 +41,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class AbstractControllerInfo {
     private final Log logger = LogFactory.getLog(getClass());
-    private Map<String, String> links = new HashMap<String, String>();
+    private Map<String, String> links = new HashMap<>();
     private static String DEFAULT_BASE_UAA_URL = "https://uaa.cloudfoundry.com";
     protected static final String HOST = "Host";
     protected static final String AUTHORIZATON = "Authorization";
@@ -106,7 +106,7 @@ public abstract class AbstractControllerInfo {
     }
 
     protected Map<String, ?> getLinksInfo() {
-        Map<String, Object> model = new HashMap<String, Object>();
+        Map<String, Object> model = new HashMap<>();
         model.put(Origin.UAA, getUaaBaseUrl());
         model.put("login", getUaaBaseUrl().replaceAll(Origin.UAA, "login"));
         model.putAll(getLinks());
@@ -144,7 +144,7 @@ public abstract class AbstractControllerInfo {
     }
 
     protected void populateBuildAndLinkInfo(Model model) {
-        Map<String, Object> attributes = new HashMap<String, Object>();
+        Map<String, Object> attributes = new HashMap<>();
         attributes.put("links", getLinksInfo());
         model.addAllAttributes(attributes);
         model.addAttribute("links", getLinks());

@@ -12,7 +12,7 @@
 
 # customize static asset source, provides control over visual branding
 # (defaults to /resources/oss)
-#assetBaseUrl: /resources/pivotal
+assetBaseUrl: /resources/cloudcity
 
 #tiles:
 #  - name: Pivotal Network
@@ -165,7 +165,7 @@ login:
         assertionConsumerIndex: 0
         metadataTrustCheck: true
         showSamlLoginLink: true
-        linkText: 'Login with EHI credentials'
+        linkText: 'EHI credentials'
         iconUrl: https://www.google.se/images/srpr/logo11w.png
 
 #      okta-local:
