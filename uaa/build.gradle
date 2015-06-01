@@ -72,6 +72,64 @@ dependencies {
 
 }
 
+apply plugin: 'com.bmuschko.docker-remote-api'
+
+docker {
+  url = 'https://192.168.59.103:2376'
+  certPath = new File(System.properties['user.home'], '.boot2docker/certs/boot2docker-vm')
+
+  registryCredentials {
+    url = 'http://docker.fareoffice.com'
+  }
+}
+
+def dockerDir = "build/kenobi-docker"
+
+task copyDockerFiles(type: Copy) {
+  dependsOn assemble
+  from '../config/docker'
+  from 'build/libs/cloudfoundry-identity-uaa-' + version + '.war'
+  into dockerDir
+}
+
+import com.bmuschko.gradle.docker.tasks.image.Dockerfile
+
+task createDockerfile(type: Dockerfile) {
+  dependsOn copyDockerFiles
+  destFile = project.file(dockerDir + '/Dockerfile')
+  from 'tomcat:8'
+  maintainer 'Fareoffice (Rikard Andersson) "rikard.andersson@netlight.com"'
+
+  copyFile 'tomcat-users.xml', '/usr/local/tomcat/conf/tomcat-users.xml'
+  copyFile 'uaa.yml', '/usr/local/tomcat/conf/uaa.yml'
+  copyFile 'login.yml', '/usr/local/tomcat/conf/login.yml'
+  copyFile 'cloudfoundry-identity-uaa-' + version + '.war', '/usr/local/tomcat/webapps/ROOT.war'
+
+  environmentVariable 'CLOUD_FOUNDRY_CONFIG_PATH', '/usr/local/tomcat/conf'
+
+  runCommand('rm -rf /usr/local/tomcat/webapps/ROOT/')
+
+  exposePort 9000
+}
+
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
+task buildDockerImage(type: DockerBuildImage) {
+  dependsOn createDockerfile
+  inputDir = createDockerfile.destFile.parentFile
+  tag = 'kenobi-uaa'
+}
+
+import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
+
+task pushDockerImage(type: DockerPushImage) {
+  dependsOn buildDockerImage
+  imageName = 'kenobi-uaa'
+  registryCredentials = docker.registryCredentials
+}
+
+//docker-compose up --no-deps -d <your tomcat container>
+
 test {
   dependsOn identityCommon.instrumentedJar, identityScim.instrumentedJar, identityLogin.instrumentedJar
   exclude 'org/cloudfoundry/identity/uaa/integration/*.class'

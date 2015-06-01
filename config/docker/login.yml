@@ -1,0 +1,239 @@
+---
+# Cloud Foundry 2012.02.03 Beta
+# Copyright (c) [2009-2012] VMware, Inc. All Rights Reserved.
+#
+# This product is licensed to you under the Apache License, Version 2.0 (the "License").
+# You may not use this product except in compliance with the License.
+#
+# This product includes a number of subcomponents with
+# separate copyright notices and license terms. Your use of these
+# subcomponents is subject to the terms and conditions of the
+# subcomponent's license, as noted in the LICENSE file.
+
+# customize static asset source, provides control over visual branding
+# (defaults to /resources/oss)
+#assetBaseUrl: /resources/pivotal
+
+#tiles:
+#  - name: Pivotal Network
+#    login-link: https://network.gopivotal.com/login
+#    image: /resources/pivotal/images/network-logo-gray.png
+#    image-hover: /resources/pivotal/images/network-logo-teal.png
+#  - name: Pivotal Web Services
+#    login-link: https://console.10.244.0.34.xip.io
+#    image: /resources/pivotal/images/pws-logo-gray.png
+#    image-hover: /resources/pivotal/images/pws-logo-teal.png
+#  - name: Pivotal Partners
+#    login-link: https://partners.gopivotal.com/login
+#    image: /resources/pivotal/images/partners-logo-gray.png
+#    image-hover: /resources/pivotal/images/partners-logo-teal.png
+
+links:
+  # Custom self service links (will only be displayed if selfServiceLinksEnabled is true)
+  # If selfServiceLinksEnabled is true and these custom links are not provided then the Login Server
+  # will use internal links.
+  #signup: http://some-oauth-client.example.com/signup
+  #passwd: http://some-other-self-service-server.com/forgot_password
+
+#notifications:
+#  url: http://localhost:3001
+#logout:
+#  redirect:
+#    url: /login
+#    parameter:
+#      disable: true
+
+login:
+  # Enable create account and forgot password links on the Login Server (enabled by default)
+  #selfServiceLinksEnabled: true
+  # Enable sending invitations on the Login Server (disabled by default)
+  #invitationsEnabled: true
+  # the brand to use for password reset emails and page titles
+  # (defaults to oss)
+  #brand: pivotal
+  #base URL that the login server can be reached at
+  url: http://localhost:9000
+
+  # SAML Key Configuration
+  # The location and credentials of the certificate for this SP
+  # See README.md for details on how to create this.
+  serviceProviderKey: |
+    -----BEGIN RSA PRIVATE KEY-----
+    Proc-Type: 4,ENCRYPTED
+    DEK-Info: DES-EDE3-CBC,BE03AC562D734AB1
+
+    mvMS20ddwCJ6A+ABJKWViGTgLpWUVA5ZqKYU6Q3N+le769s4uygcMOtvTcjgH46E
+    3gIDR+Qt+UO/Yv+EgIJnga+vLMayjg/pl2bR8p1lK7gUkAb7DwDviySSi18tAt0O
+    NTyJEzy6G+WnlSs+3tzRUCneaoFB1/LDdUSOzaSLRtU/r+Vt/9BYBQbZMalnSQRE
+    U17VhISbfj4MgNIfZU+7+ALfE0+Muno4WDk+IJXArAk7wckF6NO7M4EKHlLzrHI0
+    +PccNBKN/rAevYZrZOmGCw4jKu5JJDtt6SgQJIp/XGEZlv+KD2cWPBC4nj7nJHAz
+    ezt9SfnL8jQlClTwQyPHjwDPlL/WHQrBpxpFF83FnN8B02DWwXQE2oTC7RtijQVT
+    NKto/vSODK0RfaulLHNx6RvJF0YFWSSofTm0G5TLwWCCrVekK0N5zAYPeG9LgjlG
+    4xILPSE+Y6hYIVN2gXNZOVB8T5O+Jf1KQlmMnZ9A5o1gcUJq0rCBa6i2D2rveQGE
+    eLm3BgyMp5v0JsyuzDBuxVWSgJFt+KHz/mhdgdG8End3QBF2BBaHpLP0+5BqIZHX
+    NYCDBwWK/k40oxT8KLdFfkBU48Yndq7ARFdq3YzPU6FdSpgwZM5p8HYkl1THcskI
+    Ri7zVHxpm0tPZqqqgzr6HBvSiQhACT4dOXV5V8bEoL5tlyuZllq2MBayl9yd0+bq
+    6hVZXUYewtPyE2Wj2PDr2F7fGtYhKcrnQxH63w3OhIzgkxUTQ63h710QDJjOtYCm
+    /PCAsNBePrnjrHHxMxkMVCtTYSeBePk0vkUtFOE5hIc=
+    -----END RSA PRIVATE KEY-----
+  serviceProviderKeyPassword: password
+  serviceProviderCertificate: |
+    -----BEGIN CERTIFICATE-----
+    MIIC6TCCAlICCQDN85uMN+4K5jANBgkqhkiG9w0BAQsFADCBuDELMAkGA1UEBhMC
+    VVMxCzAJBgNVBAgMAkNBMRYwFAYDVQQHDA1TYW4gRnJhbmNpc2NvMR0wGwYDVQQK
+    DBRQaXZvdGFsIFNvZnR3YXJlIEluYzEeMBwGA1UECwwVQ2xvdWRmb3VuZHJ5IElk
+    ZW50aXR5MRswGQYDVQQDDBJ1YWEucnVuLnBpdm90YWwuaW8xKDAmBgkqhkiG9w0B
+    CQEWGXZjYXAtZGV2QGNsb3VkZm91bmRyeS5vcmcwHhcNMTUwMzAyMTQyMDQ4WhcN
+    MjUwMjI3MTQyMDQ4WjCBuDELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAkNBMRYwFAYD
+    VQQHDA1TYW4gRnJhbmNpc2NvMR0wGwYDVQQKDBRQaXZvdGFsIFNvZnR3YXJlIElu
+    YzEeMBwGA1UECwwVQ2xvdWRmb3VuZHJ5IElkZW50aXR5MRswGQYDVQQDDBJ1YWEu
+    cnVuLnBpdm90YWwuaW8xKDAmBgkqhkiG9w0BCQEWGXZjYXAtZGV2QGNsb3VkZm91
+    bmRyeS5vcmcwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAN0u5J4BJUDgRv6I
+    h5/r7rZjSrFVLL7bl71CzBIaVk1BQPYfBC8gggGAWmYYxJV0Kz+2Vx0Z96OnXhJk
+    gG46Zo2KMDudEeSdXou+dSBNISDv4VpLKUGnVU4n/L0khbI+jX51aS80ub8vThca
+    bkdY5x4Ir8G3QCQvCGKgU2emfFe7AgMBAAEwDQYJKoZIhvcNAQELBQADgYEAXghg
+    PwMhO0+dASJ83e2Bu63pKO808BrVjD51sSEMb0qwFc5IV6RzK/mkJgO0fphhoqOm
+    ZLzGcSYwCmj0Vc0GO5NgnFVZg4N9CyYCpDMeQynumlrNhRgnZRzlqXtQgL2bQDiu
+    coxNL/KY05iVlE1bmq/fzNEmEi2zf3dQV8CNSYs=
+    -----END CERTIFICATE----
+
+  # SAML - The entity base url is the location of this application
+  # (The host and port of the application that will accept assertions)
+  entityBaseURL: http://localhost:9000
+  # The entityID of this SP
+  entityID: EHI-SAML-login
+  saml:
+    #Entity ID Alias to login at /saml/SSO/alias/{login.saml.entityIDAlias}
+    #entityIDAlias: cloudfoundry-saml-login
+    #Default nameID if IDP nameID is not set
+    nameID: 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified'
+    #Callback URL for the post binding assertion
+    postBindingCallbackUrl: authorize/saml
+    #Default assertionConsumerIndex if IDP value is not set
+    assertionConsumerIndex: 0
+    #Local/SP metadata - sign metadata
+    signMetaData: true
+    #Local/SP metadata - requests signed
+    signRequest: true
+    socket:
+      # URL metadata fetch - pool timeout
+      connectionManagerTimeout: 10000
+      # URL metadata fetch - read timeout
+      soTimeout: 10000
+#BEGIN SAML PROVIDERS
+    providers:
+      ehi-login:
+        idpMetadata: |
+          <?xml version="1.0" encoding="UTF-8"?>
+          <md:EntityDescriptor ID="PsAadEDdRB8xddSdd-me1ltj7b3" cacheDuration="PT1440M" entityID="ehi:SAML2:SULTest" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+            <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+              <ds:SignedInfo>
+                <ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+                <ds:Reference URI="#PsAadEDdRB8xddSdd-me1ltj7b3">
+                  <ds:Transforms>
+                    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+                    <ds:Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+                  </ds:Transforms>
+                  <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                  <ds:DigestValue>VzzFR3X7sl0SysIOWEHDReDTg6w=</ds:DigestValue>
+                </ds:Reference>
+              </ds:SignedInfo>
+              <ds:SignatureValue>f6U1MrRhdkncSLQFVkLHwIE/L4bTbv6koDzS8nxKOPL3RgqZhzCfVszlNtPy8pIS6apKgZgiswEO5RkFqVYVbQXl1DWb6TzJTkPUYAb+r+fyA/P0KRle60mgLow30D2rAGYUD+x4//Ps4OB82i5qshjIvAuq2BRi+3YwCsTxg4Bx/CCRdMZBGIy7sk70BMHsfRYWmg6V3S1syDLdc8yu8FSgqcCWFv9NtxfUI0mI8Dtd1ubaUHT6MEvlraamBEagwOdId5mF/p/F9HtQ6V1O7SNx3i66IqY8yhOSmP4YagG9GrusDu2kVC7OSsgxibJZZj2d4ErFzZBNCWnYvVTrkQ==</ds:SignatureValue>
+            </ds:Signature>
+            <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol" WantAuthnRequestsSigned="false">
+              <md:KeyDescriptor use="signing">
+                <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                  <ds:X509Data>
+                    <ds:X509Certificate>MIIC3jCCAcagAwIBAgIGAUkQZqc0MA0GCSqGSIb3DQEBBQUAMDAxCzAJBgNVBAYTAlVTMQwwCgYDVQQKEwNFSEkxEzARBgNVBAMTCktlbm9iaS1ERVYwHhcNMTQxMDE0MjA0MzIzWhcNMTYxMDEzMjA0MzIzWjAwMQswCQYDVQQGEwJVUzEMMAoGA1UEChMDRUhJMRMwEQYDVQQDEwpLZW5vYmktREVWMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA28zWj8xLi1d/TnGyx+jaHjX1EgwuUUIWr7XqJBesArQAjGohZuvMHfNN9yOEfR46/q02p/EYX3COjDlctrUZVQdG58Xubj9f0C0zBFUxgAQ4blbJ5F4Ka3PWegZXUDlYIFxQX4R1rvIBbmvNrgtz7d4d3Stl5eAbCSI15JqccIe3h6mQNg3sr+DHxVuFSoqPf2UVctjmsicl05//+kc+Mp9oH+YW6LvyiHGHDrYDPIDCL2Uam7BIWql+yENe67bCH3G0SrafJTdC/i8yMfM1tOrJ5jBf+hb3O8N7luif4NsHaj6gTYe0plQ7P66T5belD18MNPuFBl0e3bHjXY6lDwIDAQABMA0GCSqGSIb3DQEBBQUAA4IBAQBcZSA/RVN9gg83RQs50PQ1lDM0CG70EwUsYtCAxy/sWyH8sSCPMfWEihZ78dI07APW2894sdsc6ZtoKn0Y0tIqInRCGBVAPYJNMg5g0wS/cGSPyw7Gm0llM8lyik0qBhoZw10q+jQsfW1Z5an3B92jEj3NeQWY2tET59EfBsrTX8sZwP/G/SeZEasJ74tHR5Mc0ln4GCmkTLltIZoz6Ee9uvLiNwCrj3X4XoTr+iGEcy02uahlSNkMb/UAG9bkNO4flGB9naCOhTSwlscivNpBy6WzgRcbaXVjPS2S16179mMu1vuhUvw6vRZ1XXPZMoPWEhDaeEp86dhuKpI/A0dt</ds:X509Certificate>
+                  </ds:X509Data>
+                </ds:KeyInfo>
+              </md:KeyDescriptor>
+              <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+              <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://mylablogon.ehi.com/idp/SSO.saml2"/>
+              <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://mylablogon.ehi.com/idp/SSO.saml2"/>
+              <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact" Location="https://mylablogon.ehi.com/idp/SSO.saml2"/>
+              <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://mylablogon.ehi.com/idp/SSO.saml2"/>
+              <saml:Attribute Name="username" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"/>
+              <saml:Attribute Name="email" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"/>
+              <saml:Attribute Name="lastname" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"/>
+              <saml:Attribute Name="firstname" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:basic" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"/>
+            </md:IDPSSODescriptor>
+            <md:ContactPerson contactType="administrative"/>
+          </md:EntityDescriptor>
+        nameID: urn.oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+        assertionConsumerIndex: 0
+        metadataTrustCheck: true
+        showSamlLoginLink: true
+        linkText: 'Login with EHI credentials'
+        iconUrl: https://www.google.se/images/srpr/logo11w.png
+
+#      okta-local:
+#        idpMetadata: https://pivotal.oktapreview.com/app/k36wkjw6EAEJVZXFFDAU/sso/saml/metadata
+#        nameID: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+#        assertionConsumerIndex: 0
+#        metadataTrustCheck: true
+#        showSamlLoginLink: true
+#        linkText: 'Okta Preview 1'
+#        iconUrl: 'http://link.to/icon.jpg'
+#      okta-local-2:
+#        idpMetadata: |
+#          <?xml version="1.0" encoding="UTF-8"?><md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" entityID="http://www.okta.com/k2lw4l5bPODCMIIDBRYZ"><md:IDPSSODescriptor WantAuthnRequestsSigned="true" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol"><md:KeyDescriptor use="signing"><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><ds:X509Data><ds:X509Certificate>MIICmTCCAgKgAwIBAgIGAUPATqmEMA0GCSqGSIb3DQEBBQUAMIGPMQswCQYDVQQGEwJVUzETMBEG
+#          A1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU
+#          MBIGA1UECwwLU1NPUHJvdmlkZXIxEDAOBgNVBAMMB1Bpdm90YWwxHDAaBgkqhkiG9w0BCQEWDWlu
+#          Zm9Ab2t0YS5jb20wHhcNMTQwMTIzMTgxMjM3WhcNNDQwMTIzMTgxMzM3WjCBjzELMAkGA1UEBhMC
+#          VVMxEzARBgNVBAgMCkNhbGlmb3JuaWExFjAUBgNVBAcMDVNhbiBGcmFuY2lzY28xDTALBgNVBAoM
+#          BE9rdGExFDASBgNVBAsMC1NTT1Byb3ZpZGVyMRAwDgYDVQQDDAdQaXZvdGFsMRwwGgYJKoZIhvcN
+#          AQkBFg1pbmZvQG9rdGEuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCeil67/TLOiTZU
+#          WWgW2XEGgFZ94bVO90v5J1XmcHMwL8v5Z/8qjdZLpGdwI7Ph0CyXMMNklpaR/Ljb8fsls3amdT5O
+#          Bw92Zo8ulcpjw2wuezTwL0eC0wY/GQDAZiXL59npE6U+fH1lbJIq92hx0HJSru/0O1q3+A/+jjZL
+#          3tL/SwIDAQABMA0GCSqGSIb3DQEBBQUAA4GBAI5BoWZoH6Mz9vhypZPOJCEKa/K+biZQsA4Zqsuk
+#          vvphhSERhqk/Nv76Vkl8uvJwwHbQrR9KJx4L3PRkGCG24rix71jEuXVGZUsDNM3CUKnARx4MEab6
+#          GFHNkZ6DmoT/PFagngecHu+EwmuDtaG0rEkFrARwe+d8Ru0BN558abFb</ds:X509Certificate></ds:X509Data></ds:KeyInfo></md:KeyDescriptor><md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat><md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat><md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://pivotal.oktapreview.com/app/pivotal_pivotalcfstaging_1/k2lw4l5bPODCMIIDBRYZ/sso/saml"/><md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://pivotal.oktapreview.com/app/pivotal_pivotalcfstaging_1/k2lw4l5bPODCMIIDBRYZ/sso/saml"/></md:IDPSSODescriptor></md:EntityDescriptor>
+#        nameID: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+#        assertionConsumerIndex: 0
+#        metadataTrustCheck: true
+#        showSamlLoginLink: true
+#        linkText: 'Okta Preview 2'
+#      vsphere.local:
+#        idpMetadata: https://win2012-sso2.localdomain:7444/websso/SAML2/Metadata/vsphere.local
+#        nameID: urn:oasis:names:tc:SAML:2.0:nameid-format:persistent
+#        assertionConsumerIndex: 0
+#        showSamlLoginLink: true
+#        linkText: 'Log in with vCenter SSO'
+#      openam-local:
+#        idpMetadata: http://localhost:8081/openam/saml2/jsp/exportmetadata.jsp?entityid=http://localhost:8081/openam
+#        nameID: urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+#        assertionConsumerIndex: 0
+#        signMetaData: false
+#        signRequest: false
+#        showSamlLoginLink: true
+#        linkText: 'Log in with OpenAM'
+#END SAML PROVIDERS
+
+  authorize:
+    url: http://localhost:9000/oauth/authorize
+
+uaa:
+  # The hostname of the UAA that this login server will connect to
+  url: http://localhost:9000/
+  token:
+    url: http://localhost:9000/oauth/token
+  approvals:
+    url: http://localhost:9000/approvals
+  login:
+    url: http://localhost:9000/authenticate
+
+# The secret that this login server will use to authenticate to the uaa
+LOGIN_SECRET: loginsecret
+
+# Google Analytics
+#analytics:
+#  code: secret_code
+#  domain: example.com
+
+#smtp:
+#  host: localhost
+#  port: 2525
+#  user:
+#  password:

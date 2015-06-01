@@ -108,9 +108,9 @@ subprojects {
   install {
     repositories.mavenInstaller {
       pom.project {
-        name 'UAA'
-        description 'Cloud Foundry User Account and Authentication'
-        url 'http://github.com//cloudfoundry/uaa'
+        name 'Kenobi'
+        description 'Kenobi - based on Cloud Foundry User Account and Authentication'
+        url 'http://github.com//rikardNL/uaa'
         inceptionYear '2011'
         licenses {
           license {
@@ -120,9 +120,9 @@ subprojects {
           }
         }
         scm {
-          connection 'scm:git:git@github.com:cloudfoundry/uaa.git'
-          developerConnection 'scm:git:git@github.com:cloudfoundry/uaa.git'
-          url 'https://github.com/cloudfoundry/uaa'
+          connection 'scm:git:git@github.com:rikardNL/uaa.git'
+          developerConnection 'scm:git:git@github.com:rikardNL/uaa.git'
+          url 'https://github.com/rikardNL/uaa'
         }
         developers {
           developer {
@@ -145,6 +145,13 @@ subprojects {
             roles{
               role 'Developer'
             }
+          }
+          developer {
+            id 'rikardNL'
+            name 'Rikard Andersson'
+          }
+          roles {
+            role 'Developer'
           }
         }
       }
@@ -244,32 +251,9 @@ task flushCoverageData(type: Exec) {
 
 task run(dependsOn: cargoRunLocal)
 
-//apply plugin: 'com.bmuschko.docker-java-application'
-//
-//docker {
-//  dockerServerUrl = 'http://192.168.59.103:2375'
-//
-//  javaApplication {
-//    baseImage = 'tomcat:8'
-//    maintainer = 'Rikard Andersson "rikard.andersson@netlight.com"'
-//    port = 9000
-//    tag = 'kenobi'
-//  }
-//}
-
 cargo {
   containerId = 'tomcat8x'
   port = 9000
-
-  deployable {
-    file = file('samples/api/build/libs/cloudfoundry-identity-api-' + version + '.war')
-    context = 'api'
-  }
-
-  deployable {
-    file = file('samples/app/build/libs/cloudfoundry-identity-app-' + version + '.war')
-    context = 'app'
-  }
 
   remote {
     hostname = '192.168.59.103'
