@@ -19,7 +19,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-2.0.xsd
-        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.0.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
@@ -37,21 +37,25 @@
     <import resource="classpath:spring/env.xml" />
     <import resource="spring/audit.xml" />
 
-    <security:http pattern="/resources/**" security="none" />
-    <security:http pattern="/favicon.ico" security="none" />
-    <security:http pattern="/info" security="none" />
-    <security:http pattern="/password/**" security="none" />
-    <security:http pattern="/healthz/**" security="none" name="healthz"/>
-    <security:http pattern="/saml/web/**" security="none" />
-    <security:http pattern="/authorize/saml*" security="none" />
-    <security:http pattern="/vendor/**" security="none" />
+
+    <security:http name="secFilterOpen01" pattern="/resources/**" security="none" />
+    <security:http name="secFilterOpen02" pattern="/favicon.ico" security="none" />
+    <security:http name="secFilterOpen03" pattern="/info" security="none" />
+    <security:http name="secFilterOpen04" pattern="/password/**" security="none" />
+    <security:http name="secFilterOpen05Healthz" pattern="/healthz/**" security="none" />
+    <security:http name="secFilterOpen06" pattern="/saml/web/**" security="none" />
+    <security:http name="secFilterOpen07" pattern="/vendor/**" security="none" />
     <!--<sec:http pattern="/login" security="none" />-->
-    <security:http pattern="/error" security="none" />
-    <security:http pattern="/forgot_password*" security="none" />
-    <security:http pattern="/reset_password" security="none" />
-    <security:http pattern="/email_sent" security="none" />
-    <security:http pattern="/create_account*" security="none" />
-    <security:http pattern="/accounts/email_sent" security="none" />
+    <security:http name="secFilterOpen08" pattern="/error" security="none" />
+    <security:http name="secFilterOpen11" pattern="/email_sent" security="none" />
+    <security:http name="secFilterOpen12" pattern="/create_account*" security="none" />
+    <security:http name="secFilterOpen13" pattern="/accounts/email_sent" security="none" />
+    <security:http name="secFilterOpen14" pattern="/authorize/saml*" security="none" />
+    <security:http name="secFilterCsrfLandingPage14" pattern="/invalid_request" security="none" />
+
+    <!-- PREVIOUS STUFF -->
+    <!--<security:http pattern="/forgot_password*" security="none" />-->
+    <!--<security:http pattern="/reset_password" security="none" />-->
 
     <bean id="xFrameOptionsFilter" class="org.cloudfoundry.identity.uaa.login.XFrameOptionsFilter" />
     <bean id="oauth2TokenParseFilter" class="java.lang.Class" factory-method="forName">
@@ -113,6 +117,21 @@
 
     <bean id="uaaUrl" class="java.lang.String">
         <constructor-arg value="${uaa.url:http://localhost:8080/uaa}"/>
+    </bean>
+
+    <bean id="scimUserQueryConverter" class="org.cloudfoundry.identity.uaa.scim.jdbc.ScimSearchQueryConverter">
+        <property name="attributeNameMapper">
+            <bean class="org.cloudfoundry.identity.uaa.rest.SimpleAttributeNameMapper">
+                <constructor-arg name="paramsMap">
+                    <map key-type="java.lang.String" value-type="java.lang.String">
+                        <entry key="emails\.value" value="email" />
+                        <entry key="groups\.display" value="authorities" />
+                        <entry key="phoneNumbers\.value" value="phoneNumber" />
+                    </map>
+                </constructor-arg>
+            </bean>
+        </property>
+        <property name="dbCaseInsensitive" value="#{ (@platform eq 'mysql' and '${database.caseinsensitive:true}') ? true : '${database.caseinsensitive:false}'}"/>
     </bean>
 
     <bean id="loginUrl" class="java.lang.String">
@@ -214,8 +233,6 @@
         <property name="identityZone" ref="uaaIdentityZone"/>
     </bean>
     <!--<mvc:resources location="/" mapping="/**" />-->
-
-    <mvc:annotation-driven />
 
     <mvc:default-servlet-handler />
 

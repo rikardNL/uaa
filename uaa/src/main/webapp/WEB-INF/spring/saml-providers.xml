@@ -19,16 +19,15 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/security
-       http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+       http://www.springframework.org/schema/security/spring-security-4.0.xsd">
 
-
-        <!-- Register authentication manager with SAML provider -->
+    <!-- Register authentication manager with SAML provider -->
         <security:authentication-manager id="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider" />
         </security:authentication-manager>
 
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
-            <security:filter-chain-map path-type="ant">
+            <security:filter-chain-map request-matcher="ant">
                 <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint" />
                 <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter" />
                 <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter" />
