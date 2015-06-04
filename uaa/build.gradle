@@ -85,9 +85,14 @@ docker {
 
 def dockerDir = "build/kenobi-docker"
 
-task copyDockerFiles(type: Copy) {
+task copyDockerConfigFiles(type: Copy) {
   dependsOn assemble
   from '../config/docker'
+  into dockerDir
+}
+
+task copyDockerWarFiles(type: Copy) {
+  dependsOn copyDockerConfigFiles
   from 'build/libs/cloudfoundry-identity-uaa-' + version + '.war'
   into dockerDir
 }
@@ -95,7 +100,7 @@ task copyDockerFiles(type: Copy) {
 import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 
 task createDockerfile(type: Dockerfile) {
-  dependsOn copyDockerFiles
+  dependsOn copyDockerWarFiles
   destFile = project.file(dockerDir + '/Dockerfile')
   from 'tomcat:8'
   maintainer 'Fareoffice (Rikard Andersson) "rikard.andersson@netlight.com"'
@@ -112,12 +117,39 @@ task createDockerfile(type: Dockerfile) {
   exposePort 9000
 }
 
+task createDevDockerfile(type: Dockerfile) {
+  dependsOn copyDockerConfigFiles
+
+  destFile = project.file(dockerDir + '/dev' + '/Dockerfile')
+  from 'tomcat:8'
+  maintainer 'Fareoffice (Rikard Andersson) "rikard.andersson@netlight.com"'
+
+  copyFile 'tomcat-users.xml', '/usr/local/tomcat/conf/tomcat-users.xml'
+  copyFile 'uaa.yml', '/usr/local/tomcat/conf/uaa.yml'
+  copyFile 'login.yml', '/usr/local/tomcat/conf/login.yml'
+  copyFile 'server.xml', '/usr/local/tomcat/conf/server.xml'
+
+  volume project.file('build/libs').absolutePath
+
+  environmentVariable 'CLOUD_FOUNDRY_CONFIG_PATH', '/usr/local/tomcat/conf'
+
+  runCommand('rm -rf /usr/local/tomcat/webapps/ROOT/')
+
+  exposePort 9000
+}
+
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 task buildDockerImage(type: DockerBuildImage) {
   dependsOn createDockerfile
   inputDir = createDockerfile.destFile.parentFile
   tag = 'kenobi-uaa'
+}
+
+task buildDevDockerImage(type: DockerBuildImage) {
+  dependsOn createDevDockerfile
+  inputDir = createDevDockerfile.destFile.parentFile
+  tag = 'kenobi-dev-uaa'
 }
 
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
