@@ -7,7 +7,7 @@
 #spring_profiles: ldap,default,hsqldb
 #spring_profiles: saml
 #spring_profiles: keystone,default,hsqldb
-spring_profiles: ldap,saml,mysql
+spring_profiles: saml,mysql
 
 #database:
 #  driverClassName: org.postgresql.Driver
@@ -54,20 +54,6 @@ database:
 #     countFailuresWithinSeconds: 3600
 #     lockoutPeriodSeconds: 600
 
-# LDAP settings
-# Should change to ldaps or StartTSL later
-# Should try other group mappings further ahead
-ldap:
-  profile:
-    file: ldap/ldap-search-and-bind.xml
-  base:
-    url: 'ldap://ldap:10389/'
-    userDn: 'uid=admin,ou=system'
-    password: 'secret'
-    searchBase: ''
-    searchFilter: 'cn={0}'
-  groups:
-    file: ldap/ldap-groups-null.xml
 
 oauth:
   user:
@@ -89,7 +75,7 @@ oauth:
       authorized-grant-types: authorization_code
       scope: scim.read,scim.write,password.write,openid
       authorities: uaa.resource,scim.read,scim.write,password.write
-      redirect-uri: http://localhost:9000/callback
+      redirect-uri: http://localhost:9001/callback
 
 scim:
   users:
