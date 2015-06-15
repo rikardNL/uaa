@@ -4,9 +4,8 @@ package org.springframework.security.ldap.server;
 import org.apache.directory.server.ldap.LdapServer;
 import org.apache.directory.server.ldap.handlers.extended.StartTlsHandler;
 import org.apache.directory.server.protocol.shared.transport.TcpTransport;
-import sun.security.tools.keytool.CertAndKeyGen;
+import sun.security.x509.CertAndKeyGen;
 import sun.security.x509.X500Name;
-
 
 import java.io.File;
 import java.io.FileNotFoundException;

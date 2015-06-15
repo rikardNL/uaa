@@ -74,11 +74,11 @@ allprojects {
 
 subprojects {
   apply plugin: 'java'
-  [compileJava, compileTestJava]*.options*.compilerArgs = ['-Xlint:none', '-XDignore.symbol.file']
-  sourceCompatibility = 1.8
-  targetCompatibility = 1.8
+  [compileJava, compileTestJava]*.options*.compilerArgs = ['-Xlint:none']
+  sourceCompatibility = 1.7
+  targetCompatibility = 1.7
   test {
-    jvmArgs += [ "-Xmx2048m" ]
+    jvmArgs += [ "-XX:MaxPermSize=512m", "-Xmx2048m" ]
   }
 
 
