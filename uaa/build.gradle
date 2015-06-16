@@ -37,8 +37,8 @@ dependencies {
   }
   compile group: 'cglib', name: 'cglib', version:'2.2.2'
   runtime group: 'org.springframework.security', name: 'spring-security-config', version:parent.springSecurityVersion
-  runtime group: 'org.springframework.security', name: 'spring-security-jwt', version:'1.0.1.RELEASE'
-  runtime group: 'org.springframework.retry', name: 'spring-retry', version:'1.0.2.RELEASE'
+  runtime group: 'org.springframework.security', name: 'spring-security-jwt', version:parent.springSecurityJwtVersion
+  runtime group: 'org.springframework.retry', name: 'spring-retry', version:'1.1.2.RELEASE'
   runtime group: 'org.aspectj', name: 'aspectjweaver', version:'1.6.9'
   runtime group: 'org.apache.tomcat', name: 'tomcat-jdbc', version:parent.tomcatVersion
   runtime group: 'javax.servlet', name: 'jstl', version:'1.2'
@@ -84,6 +84,7 @@ docker {
 }
 
 def dockerDir = "build/kenobi-docker"
+def dockerBase = "tomcat:8-jre8"
 
 task copyDockerConfigFiles(type: Copy) {
   dependsOn assemble
@@ -102,7 +103,7 @@ import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 task createDockerfile(type: Dockerfile) {
   dependsOn copyDockerWarFiles
   destFile = project.file(dockerDir + '/Dockerfile')
-  from 'tomcat:8'
+  from dockerBase
   maintainer 'Fareoffice (Rikard Andersson) "rikard.andersson@netlight.com"'
 
   copyFile 'tomcat-users.xml', '/usr/local/tomcat/conf/tomcat-users.xml'
@@ -121,7 +122,7 @@ task createDevDockerfile(type: Dockerfile) {
   dependsOn copyDockerConfigFiles
 
   destFile = project.file(dockerDir + '/dev' + '/Dockerfile')
-  from 'tomcat:8'
+  from dockerBase
   maintainer 'Fareoffice (Rikard Andersson) "rikard.andersson@netlight.com"'
 
   copyFile 'tomcat-users.xml', '/usr/local/tomcat/conf/tomcat-users.xml'
@@ -159,8 +160,6 @@ task pushDockerImage(type: DockerPushImage) {
   imageName = 'kenobi-uaa'
   registryCredentials = docker.registryCredentials
 }
-
-//docker-compose up --no-deps -d <your tomcat container>
 
 test {
   dependsOn identityCommon.instrumentedJar, identityScim.instrumentedJar, identityLogin.instrumentedJar
